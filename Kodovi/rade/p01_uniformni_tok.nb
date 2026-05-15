@@ -1,0 +1,8 @@
+Notebook[{
+ Cell["(* Primjer 2.6.1 - Uniformni tok *)\n\
+U = 1; V = 0.3;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800, PlotRange -> All};\n\
+StreamPlot[{U, V}, {x, -3, 3}, {y, -3, 3},\n\
+ StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+ StreamScale -> {Small, Scaled[0.6], None}, Evaluate@base]\n", "Input"]
+}]

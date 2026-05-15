@@ -1,0 +1,12 @@
+Notebook[{
+ Cell["(* Joukowski map - simple static version *)\n\
+c = -0.2 + 0.2 I;  (* centar kruga *)\n\
+R = 1;            (* radijus *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+circle = ParametricPlot[{Re[c + R Exp[I t]], Im[c + R Exp[I t]]}, {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thin]];\n\
+airfoil = ParametricPlot[{Re[J[c + R Exp[I t]]], Im[J[c + R Exp[I t]]]}, {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]];\n\
+Show[circle, airfoil, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

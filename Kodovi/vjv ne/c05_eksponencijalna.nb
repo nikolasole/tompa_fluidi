@@ -1,0 +1,11 @@
+Notebook[{
+ Cell["(* Example 5.5 - Exponential map z -> exp(z) *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+g[z_] := Exp[z];\n\
+map[z_] := {Re[g[z]], Im[g[z]]};\n\
+grid = Show[\n\
+  Table[ParametricPlot[map[x0 + I t], {t, -Pi/2, Pi/2}, PlotStyle -> Black], {x0, -2, 2, 0.3}],\n\
+  Table[ParametricPlot[map[t + I y0], {t, -2, 2}, PlotStyle -> Black], {y0, -Pi/2, Pi/2, 0.3}]\n\
+];\n\
+Show[grid, Evaluate@base]\n", "Input"]
+}]

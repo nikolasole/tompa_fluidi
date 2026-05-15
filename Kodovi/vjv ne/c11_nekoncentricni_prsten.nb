@@ -1,0 +1,12 @@
+Notebook[{
+ Cell["(* Example 5.19 - Nonconcentric annulus to concentric *)\n\
+c = 0.2;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+g[z_] := (2 c z - 1)/(z - 2 c);\n\
+map[z_] := {Re[g[z]], Im[g[z]]};\n\
+grid = Show[\n\
+  Table[ParametricPlot[map[x0 + I t], {t, -1, 1}, PlotStyle -> Black], {x0, -1, 1, 0.2}],\n\
+  Table[ParametricPlot[map[t + I y0], {t, -1, 1}, PlotStyle -> Black], {y0, -1, 1, 0.2}]\n\
+];\n\
+Show[grid, Evaluate@base]\n", "Input"]
+}]

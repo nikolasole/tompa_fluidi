@@ -1,0 +1,15 @@
+Notebook[{
+ Cell["(* Airfoil (phi = 30 deg) *)\n\
+U = 1; R = 1; c = -0.1 + 0.2 I; phi = 30 Degree;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+W[z_] := U Exp[-I phi] (z + R^2/z);\n\
+psi[x_, y_] := Im[W[x + I y]];\n\
+cont = ContourPlot[psi[x, y], {x, -3, 3}, {y, -3, 3},\n\
+  Contours -> 18, ContourStyle -> Directive[Blue, Thick], ContourShading -> False,\n\
+  RegionFunction -> Function[{x, y}, Abs[(x + I y) - c] >= R + 0.02]];\n\
+lines = Cases[Normal[cont], Line[pts_] :> Line[(ReIm[J[(#1 + I #2)]] & @@@ pts)], Infinity];\n\
+streamMapped = Graphics[lines];\n\
+airfoil = ParametricPlot[ReIm[J[c + R Exp[I t]]], {t, 0, 2 Pi}, PlotStyle -> Directive[Black, Thick]];\n\
+Show[streamMapped, airfoil, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

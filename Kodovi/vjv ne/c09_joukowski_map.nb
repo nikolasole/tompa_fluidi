@@ -1,0 +1,11 @@
+Notebook[{
+ Cell["(* Example 5.13 - Joukowski map (z + 1/z)/2 *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+g[z_] := (z + 1/z)/2;\n\
+map[z_] := {Re[g[z]], Im[g[z]]};\n\
+grid = Show[\n\
+  Table[ParametricPlot[map[x0 + I t], {t, -2, 2}, PlotStyle -> Black], {x0, -2, 2, 0.3}],\n\
+  Table[ParametricPlot[map[t + I y0], {t, -2, 2}, PlotStyle -> Black], {y0, -2, 2, 0.3}]\n\
+];\n\
+Show[grid, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

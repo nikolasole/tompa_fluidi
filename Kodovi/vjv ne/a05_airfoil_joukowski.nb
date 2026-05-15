@@ -1,0 +1,9 @@
+Notebook[{
+ Cell["(* Example 6.9 - Airfoil via Joukowski map *)\n\
+c = -0.1 + 0.2 I; R = 1;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+airfoil = ParametricPlot[{Re[J[c + R Exp[I t]]], Im[J[c + R Exp[I t]]]}, {t, 0, 2 Pi},\n\
+ PlotStyle -> Directive[Black, Thick]];\n\
+Show[airfoil, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

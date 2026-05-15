@@ -1,0 +1,20 @@
+Notebook[{
+ Cell["(* Simple Joukowski airfoil flow (streamlines = contours of psi) *)\n\
+U = 1; R = 1; c = -0.1 + 0.2 I; phi = 15 Degree;  (* pomak kruga + napadni kut *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+W[z_] := U Exp[-I phi] (z + R^2/z);   (* potencijal uniformnog toka oko kruga *)\n\
+psi[x_, y_] := Im[W[x + I y]];\n\
+(* strujnice u z-ravnini (oko kruga) *)\n\
+cont = ContourPlot[psi[x, y], {x, -3, 3}, {y, -3, 3},\n\
+  Contours -> 18, ContourStyle -> Directive[Blue, Thick], ContourShading -> False,\n\
+  RegionFunction -> Function[{x, y}, Abs[(x + I y) - c] >= R + 0.02]];\n\
+(* mapiranje strujnica u Joukowski ravninu *)\n\
+lines = Cases[Normal[cont], Line[pts_] :> Line[(ReIm[J[(#1 + I #2)]] & @@@ pts)], Infinity];\n\
+streamMapped = Graphics[lines];\n\
+(* sam airfoil *)\n\
+airfoil = ParametricPlot[ReIm[J[c + R Exp[I t]]], {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]];\n\
+body = Graphics[{GrayLevel[0.85], Polygon[ReIm[J[c + R Exp[I t]]] /. t -> # & /@ Range[0, 2 Pi, 0.05]]}];\n\
+Show[streamMapped, body, airfoil, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

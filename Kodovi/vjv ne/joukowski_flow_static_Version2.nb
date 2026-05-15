@@ -1,0 +1,19 @@
+Notebook[{
+ Cell["(* Joukowski airfoil flow - direct psi in airfoil plane *)\n\
+U = 1; R = 1; c = -0.1 + 0.2 I; alpha = 15 Degree;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+invJ[w_] := Module[{s = Sqrt[w^2 - 1], z1, z2}, z1 = w + s; z2 = w - s; If[Abs[z1] >= 1, z1, z2]];\n\
+zeta[w_] := invJ[w];\n\
+z[w_] := c + R zeta[w];\n\
+Wz[zz_] := U Exp[-I alpha] ((zz - c) + R^2/(zz - c));\n\
+psi[x_, y_] := Im[Wz[z[x + I y]]];\n\
+insideAirfoilQ[x_, y_] := Abs[zeta[x + I y]] <= 1.001;\n\
+contours = ContourPlot[psi[x, y], {x, -0.5, 1.6}, {y, -0.6, 0.6},\n\
+  Contours -> 18, ContourStyle -> Directive[Blue, Thick], ContourShading -> False,\n\
+  RegionFunction -> Function[{x, y}, Not[insideAirfoilQ[x, y]]]];\n\
+airfoil = ParametricPlot[ReIm[J[c + R Exp[I t]]], {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]];\n\
+body = Graphics[{GrayLevel[0.85], Polygon[ReIm[J[c + R Exp[I t]]] /. t -> # & /@ Range[0, 2 Pi, 0.03]]}];\n\
+Show[contours, body, airfoil, Evaluate@base]\n", \"Input\"]
+}]

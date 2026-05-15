@@ -1,0 +1,9 @@
+Notebook[{
+ Cell["(* Primjer 2.6.9 – Tok u kutu *)\n\
+a = 1;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800, PlotRange -> All};\n\
+u[x_, y_] := 2 a x; v[x_, y_] := -2 a y;\n\
+StreamPlot[{u[x, y], v[x, y]}, {x, 0, 2.5}, {y, 0, 2.5},\n\
+ StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+ StreamScale -> {Small, Scaled[0.6], None}, Evaluate@base]\n", "Input"]
+}]

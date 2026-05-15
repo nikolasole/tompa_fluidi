@@ -1,0 +1,11 @@
+Notebook[{
+ Cell["(* Clean Joukowski map: circles -> airfoil-like curves *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+g[z_] := (z + 1/z)/2;\n\
+circles = Table[\n\
+  ParametricPlot[\n\
+    {Re[g[c + r Exp[I t]]], Im[g[c + r Exp[I t]]]},\n\
+    {t, 0, 2 Pi}, PlotStyle -> Black],\n\
+  {c, {-0.2 + 0.2 I, 0.1 + 0.3 I, -0.1 + 0.1 I}}, {r, {0.9, 1.0}}] // Flatten;\n\
+Show[circles, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

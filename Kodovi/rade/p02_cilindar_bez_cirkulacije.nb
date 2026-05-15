@@ -1,0 +1,13 @@
+Notebook[{
+ Cell["(* Primjer 2.6.2 – Optjecanje cilindra bez cirkulacije *)\n\
+U = 1; r = 1;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800, PlotRange -> All};\n\
+F[x_, y_] := U (1 - r^2/(x + I y)^2);\n\
+u[x_, y_] := Re[F[x, y]]; v[x_, y_] := -Im[F[x, y]];\n\
+flow = StreamPlot[{u[x, y], v[x, y]}, {x, -3, 3}, {y, -3, 3},\n\
+ StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+ StreamScale -> {Small, Scaled[0.6], None},\n\
+ RegionFunction -> Function[{x, y}, x^2 + y^2 >= r^2 + 0.02]];\n\
+cyl = Graphics[{Black, Thick, Circle[{0, 0}, r]}];\n\
+Show[flow, cyl, Evaluate@base]\n", "Input"]
+}]

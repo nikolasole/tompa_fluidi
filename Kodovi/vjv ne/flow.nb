@@ -1,0 +1,62 @@
+Notebook[{
+ Cell["(* Primjer 2.6.8 \[Dash] Optjecanje Joukowskog profila *)\n\
+\n\
+(* Parametri strujanja *)\n\
+U = 1;\n\
+alpha = 5 Degree;     (* kut napada *)\n\
+\n\
+(* Parametri kruga *)\n\
+epsilon = 0.1;\n\
+delta = 0.15;\n\
+c = -epsilon + I delta;\n\
+R = Abs[1 - c];       (* krug prolazi kroz z=1, Kutta uvjet *)\n\
+beta = ArcSin[Im[c]/R];\n\
+Gamma = 4 Pi U R Sin[alpha + beta];\n\
+\n\
+(* Joukowska transformacija i derivacija *)\n\
+J[z_]    := (z + 1/z)/2;\n\
+dJdz[z_] := (1 - 1/z^2)/2;\n\
+\n\
+(* Inverzna Joukowska transformacija - biramo granu |z|>=1 *)\n\
+Zinv[w_] := Module[{d = Sqrt[w^2 - 1]},\n\
+  If[Abs[w + d] >= Abs[w - d], w + d, w - d]\n\
+];\n\
+\n\
+(* Derivacija kompleksnog potencijala u z-ravnini *)\n\
+dFdz[z_] := Module[{zeta = z - c},\n\
+  U Exp[-I alpha] (1 - R^2/zeta^2) + I Gamma/(2 Pi zeta)\n\
+];\n\
+\n\
+(* Brzina u ravnini profila *)\n\
+(* ?NumericQ je kljucno: sprecava simbolicku evaluaciju u StreamPlot *)\n\
+vel[x_?NumericQ, y_?NumericQ] := Module[{w, z, dj, v},\n\
+  w = x + I y;\n\
+  z = Zinv[w];\n\
+  dj = dJdz[z];\n\
+  If[Abs[dj] < 0.001, {0., 0.},\n\
+    v = dFdz[z]/dj;\n\
+    {Re[v], -Im[v]}\n\
+  ]\n\
+];\n\
+\n\
+(* Stilski predlozak *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black,\n\
+        Background -> White, ImageSize -> 800};\n\
+\n\
+(* Strujnice *)\n\
+flow = StreamPlot[vel[x, y], {x, -2.5, 2.5}, {y, -1.5, 1.5},\n\
+  StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+  StreamScale -> {Small, Scaled[0.6], None},\n\
+  Background -> White,\n\
+  RegionFunction -> Function[{x, y}, Abs[Zinv[x + I y] - c] >= R + 0.01]\n\
+];\n\
+\n\
+(* Kontura Joukowskog profila *)\n\
+airfoil = ParametricPlot[\n\
+  {Re[J[c + R Exp[I t]]], Im[J[c + R Exp[I t]]]}, {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]\n\
+];\n\
+\n\
+Show[flow, airfoil, Evaluate@base,\n\
+     PlotRange -> {{-2.5, 2.5}, {-1.5, 1.5}}]", "Input"]
+}]

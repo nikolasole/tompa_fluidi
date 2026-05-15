@@ -1,0 +1,12 @@
+Notebook[{
+ Cell["(* Primjer 2.6.8 – Izvor / Ponor *)\n\
+D = 1;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800, PlotRange -> All};\n\
+F[x_, y_] := D/(2 Pi (x + I y));\n\
+u[x_, y_] := Re[F[x, y]]; v[x_, y_] := -Im[F[x, y]];\n\
+StreamPlot[{u[x, y], v[x, y]}, {x, -2, 2}, {y, -2, 2},\n\
+ StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+ StreamScale -> {Small, Scaled[0.6], None},\n\
+ RegionFunction -> Function[{x, y}, x^2 + y^2 >= 0.05],\n\
+ Evaluate@base]\n", "Input"]
+}]

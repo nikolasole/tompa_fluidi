@@ -1,0 +1,125 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4598,        114]
+NotebookOptionsPosition[      4128,         97]
+NotebookOutlinePosition[      4517,        113]
+CellTagsIndexPosition[      4474,        110]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{"A01", ":", " ", "Uniformni", " ", "tok"}], " ", 
+   RowBox[{"(", "Primjer", " ", "2.6.1", ")"}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.987877543886518*^9, 3.987877547071569*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"c525db8e-0f04-4c57-81bd-5b231ffad808"],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"W", ",", "u", ",", "v", ",", "plotTitle"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"(*", " ", 
+       RowBox[{"Kompleksni", " ", "potencijal"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"W", "[", "z_", "]"}], ":=", 
+       RowBox[{"(", 
+        RowBox[{"U", "-", 
+         RowBox[{"I", "*", "V"}]}], ")"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "Polje", " ", "brzine", " ", "je", " ", "konstantno", " ", 
+        RowBox[{"{", 
+         RowBox[{"U", ",", "V"}], "}"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"u", "=", "U"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"v", "=", "V"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", "Naslov", " ", "grafa", " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"plotTitle", "=", 
+       RowBox[{"StringForm", "[", 
+        RowBox[{
+        "\"\<Uniformni tok \\nBrzina U = (``, ``)\>\"", ",", "U", ",", "V"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", "Crtanje", " ", "strujnica", " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"StreamPlot", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"u", ",", "v"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", 
+          RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"y", ",", 
+          RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"StreamPoints", "->", "Fine"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"StreamStyle", "->", "Arrowheads"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"PlotLabel", "->", "plotTitle"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"AxesLabel", "->", 
+         RowBox[{"{", 
+          RowBox[{"\"\<x\>\"", ",", "\"\<y\>\""}], "}"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"AspectRatio", "->", "Automatic"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"ImageSize", "->", "Medium"}]}], "\[IndentingNewLine]", 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"U", ",", "1", ",", "\"\<Brzina U\>\""}], "}"}], ",", 
+     RowBox[{"-", "2"}], ",", "2", ",", "0.1", ",", " ", 
+     RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"V", ",", "0.5", ",", "\"\<Brzina V\>\""}], "}"}], ",", 
+     RowBox[{"-", "2"}], ",", "2", ",", "0.1", ",", 
+     RowBox[{"Appearance", "->", "\"\<Labeled\>\""}]}], "}"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.98787755106983*^9, 3.987877708573216*^9}, {
+  3.9878777402035313`*^9, 3.987877969176846*^9}, {3.987877999863417*^9, 
+  3.987878024222045*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"5c2e1776-9c4c-4a37-b676-e265c1973f08"]
+},
+WindowSize->{808, 642},
+WindowMargins->{{220, Automatic}, {Automatic, 102}},
+FrontEndVersion->"14.0 for Mac OS X ARM (December 20, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b4b80a13-8cfb-4a57-a3f7-920f2623d387"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 290, 7, 30, "Input",ExpressionUUID->"c525db8e-0f04-4c57-81bd-5b231ffad808"],
+Cell[851, 29, 3261, 85, 381, "Input",ExpressionUUID->"5c2e1776-9c4c-4a37-b676-e265c1973f08"]
+}
+]
+*)

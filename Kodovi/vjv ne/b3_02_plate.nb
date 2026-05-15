@@ -1,0 +1,13 @@
+Notebook[{
+ Cell["(* Horizontal plate: uniform flow with straight streamlines *)\n\
+U = 1;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+psi[x_, y_] := U y;\n\
+contours = ContourPlot[psi[x, y], {x, -3, 3}, {y, -2, 2},\n\
+  Contours -> 16, ContourStyle -> Directive[Blue, Thick], ContourShading -> False];\n\
+arrows = StreamPlot[{U, 0}, {x, -3, 3}, {y, -2, 2},\n\
+  StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> 10,\n\
+  StreamScale -> {Small, Scaled[0.4], None}];\n\
+plate = Graphics[{Black, Thick, Line[{{-1, 0}, {1, 0}}]}];\n\
+Show[contours, arrows, plate, Evaluate@base]\n", "Input"]
+}]

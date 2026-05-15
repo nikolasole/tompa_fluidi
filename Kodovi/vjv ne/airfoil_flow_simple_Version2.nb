@@ -1,0 +1,20 @@
+Notebook[{
+ Cell["(* Simple Joukowski airfoil flow with streamlines (fixed mapping) *)\n\
+U = 1; R = 1; c = -0.1 + 0.2 I; phi = 15 Degree;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+W[z_] := U Exp[-I phi] (z + R^2/z);\n\
+psi[x_, y_] := Im[W[x + I y]];\n\
+(* streamlines in z-plane *)\n\
+cont = ContourPlot[psi[x, y], {x, -3, 3}, {y, -3, 3},\n\
+  Contours -> 18, ContourStyle -> Directive[Blue, Thick], ContourShading -> False,\n\
+  RegionFunction -> Function[{x, y}, Abs[(x + I y) - c] >= R + 0.02]];\n\
+(* convert GraphicsComplex -> explicit lines, then map to J-plane *)\n\
+mapLines[g_] := g /. GraphicsComplex[pts_, prim_] :> (prim /. Line[idx_] :> Line[ReIm[J[pts[[idx, 1]] + I pts[[idx, 2]]]]]);\n\
+streamMapped = Graphics[mapLines[Normal[cont]]];\n\
+(* airfoil shape *)\n\
+airfoil = ParametricPlot[ReIm[J[c + R Exp[I t]]], {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]];\n\
+body = Graphics[{GrayLevel[0.85], Polygon[ReIm[J[c + R Exp[I t]]] /. t -> # & /@ Range[0, 2 Pi, 0.05]]}];\n\
+Show[streamMapped, body, airfoil, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

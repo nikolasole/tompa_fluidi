@@ -1,0 +1,41 @@
+Notebook[{
+ Cell["(* Test: Tilted plate streamlines via analytic streamfunction mapping *)\n\
+U = 1; R = 1; phi = 15 Degree;\n\
+psiVals = Range[-1.2, 1.2, 0.2];\n\
+\n\
+(* Streamlines around cylinder: psi = U (r - R^2/r) sin(theta) *)\n\
+rFromPsi[psi_, th_] := Module[{s = Sin[th], a},\n\
+  If[Abs[s] < 10^-3, Infinity,\n\
+    a = psi/(U s);\n\
+    0.5 (a + Sqrt[a^2 + 4 R^2])\n\
+  ]\n\
+];\n\
+\n\
+(* Joukowski with rotation to keep far field horizontal *)\n\
+J[z_] := z + 1/z;\n\
+Wmap[z_] := Exp[-I phi] J[Exp[I phi] z];\n\
+\n\
+(* Streamline curve for given psi *)\n\
+streamCurve[psi_] := Module[{th1, th2, z1, z2, pts1, pts2},\n\
+  th1 = Range[0.02, Pi - 0.02, 0.02];\n\
+  th2 = Range[Pi + 0.02, 2 Pi - 0.02, 0.02];\n\
+  z1 = rFromPsi[psi, #] Exp[I #] & /@ th1;\n\
+  z2 = rFromPsi[psi, #] Exp[I #] & /@ th2;\n\
+  pts1 = {Re[Wmap[#]], Im[Wmap[#]]} & /@ z1;\n\
+  pts2 = {Re[Wmap[#]], Im[Wmap[#]]} & /@ z2;\n\
+  {Line[pts1], Line[pts2]}\n\
+];\n\
+\n\
+(* Airfoil outline (mapped circle) *)\n\
+airfoilPts = Table[Wmap[R Exp[I t]], {t, 0, 2 Pi, 0.01}];\n\
+airfoilPoly = Polygon[{Re[#], Im[#]} & /@ airfoilPts];\n\
+\n\
+Graphics[\n\
+  {\n\
+   Blue, Thin, Flatten[streamCurve /@ psiVals],\n\
+   GrayLevel[0.85], EdgeForm[Black], airfoilPoly\n\
+  },\n\
+  Frame -> True, Axes -> False, Background -> White,\n\
+  ImageSize -> 800, PlotRange -> {{-3, 3}, {-2, 2}}\n\
+]\n", "Input"]
+}]

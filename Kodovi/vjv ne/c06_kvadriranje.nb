@@ -1,0 +1,11 @@
+Notebook[{
+ Cell["(* Example 5.6 - Squaring map z -> z^2 *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+g[z_] := z^2;\n\
+map[z_] := {Re[g[z]], Im[g[z]]};\n\
+grid = Show[\n\
+  Table[ParametricPlot[map[x0 + I t], {t, 0, 2}, PlotStyle -> Black], {x0, 0, 2, 0.2}],\n\
+  Table[ParametricPlot[map[t + I y0], {t, 0, 2}, PlotStyle -> Black], {y0, 0, 2, 0.2}]\n\
+];\n\
+Show[grid, Evaluate@base]\n", "Input"]
+}]

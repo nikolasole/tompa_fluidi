@@ -1,0 +1,10 @@
+Notebook[{
+ Cell["(* Example 6.6 - Horizontal plate: uniform flow *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800, PlotRange -> All};\n\
+u[x_, y_] := 1; v[x_, y_] := 0;\n\
+flow = StreamPlot[{u[x, y], v[x, y]}, {x, -3, 3}, {y, -2, 2},\n\
+ StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+ StreamScale -> {Small, Scaled[0.6], None}];\n\
+plate = Graphics[{Black, Thick, Line[{{-1, 0}, {1, 0}}]}];\n\
+Show[flow, plate, Evaluate@base]\n", "Input"]
+}]

@@ -1,0 +1,15 @@
+Notebook[{
+ Cell["(* TEST: Tok oko diska – strujnice kao konture ψ = Im W *)\n\
+U = 1; R = 1;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+W[z_] := U (z + R^2/z); (* potencijal za tok oko diska *)\n\
+psi[x_, y_] := Im[W[x + I y]];\n\
+contours = ContourPlot[psi[x, y], {x, -3, 3}, {y, -3, 3},\n\
+  Contours -> 18,\n\
+  ContourStyle -> Directive[Blue, Thick],\n\
+  ContourShading -> False,\n\
+  RegionFunction -> Function[{x, y}, x^2 + y^2 >= R^2 + 0.02]\n\
+];\n\
+disk = Graphics[{GrayLevel[0.85], Disk[{0, 0}, R], Black, Thick, Circle[{0, 0}, R]}];\n\
+Show[contours, disk, Evaluate@base]\n", "Input"]
+}]

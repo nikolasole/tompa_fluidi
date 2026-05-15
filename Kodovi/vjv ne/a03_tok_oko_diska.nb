@@ -1,0 +1,13 @@
+Notebook[{
+ Cell["(* Example 6.7 - Flow around disk: W = 1/2 (z + 1/z) *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+W[z_] := (z + 1/z)/2;\n\
+F[z_] := D[W[z], z];\n\
+u[x_, y_] := Re[F[x + I y]]; v[x_, y_] := -Im[F[x + I y]];\n\
+flow = StreamPlot[{u[x, y], v[x, y]}, {x, -3, 3}, {y, -3, 3},\n\
+ StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+ StreamScale -> {Small, Scaled[0.6], None},\n\
+ RegionFunction -> Function[{x, y}, x^2 + y^2 >= 1.02]];\n\
+disk = Graphics[{Black, Thick, Circle[{0, 0}, 1]}];\n\
+Show[flow, disk, Evaluate@base]\n", "Input"]
+}]

@@ -1,0 +1,34 @@
+Notebook[{
+ Cell["(* Simple flow around Joukowski airfoil (streamlines + arrows) *)\n\
+U = 1; R = 1; c = -0.1 + 0.2 I; alpha = 15 Degree;\n\
+Gamma = 4 Pi U R Sin[alpha]; (* jednostavna aproksimacija cirkulacije *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+J[z_] := (z + 1/z)/2;\n\
+W[z_] := U Exp[-I alpha] ((z - c) + R^2/(z - c)) - I Gamma/(2 Pi) Log[z - c];\n\
+psi[x_, y_] := Im[W[x + I y]];\n\
+\n\
+(* konture ψ u z-ravnini *)\n\
+cont = ContourPlot[psi[x, y], {x, -3, 3}, {y, -3, 3},\n\
+  Contours -> 18, ContourStyle -> Directive[Blue, Thick], ContourShading -> False,\n\
+  RegionFunction -> Function[{x, y}, Abs[(x + I y) - c] >= R + 0.02]\n\
+];\n\
+\n\
+(* mapiranje kontura kroz Joukowski *)\n\
+lines = Cases[Normal[cont], Line[pts_] :> pts, Infinity];\n\
+mapPt[{x_, y_}] := ReIm[J[x + I y]];\n\
+mappedLines = Graphics[Line /@ (mapPt /@ # & /@ lines)];\n\
+\n\
+(* strelice: rijetke, duž strujnica *)\n\
+makeArrows[pts_] := Module[{step = 25},\n\
+  Table[Arrow[{pts[[i]], pts[[i + 1]]}], {i, 1, Length[pts] - 1, step}]\n\
+];\n\
+mappedArrows = Graphics[{Black, Arrowheads[0.02],\n\
+  Flatten[makeArrows /@ (mapPt /@ # & /@ lines)]\n\
+}];\n\
+\n\
+(* airfoil outline *)\n\
+airfoil = ParametricPlot[mapPt[ReIm[c + R Exp[I t]]], {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]];\n\
+\n\
+Show[mappedLines, mappedArrows, airfoil, Evaluate@base, PlotRange -> 2]\n", "Input"]
+}]

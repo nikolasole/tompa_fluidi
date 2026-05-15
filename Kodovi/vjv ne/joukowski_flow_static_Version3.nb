@@ -1,0 +1,48 @@
+Notebook[{
+ Cell["(* Joukowski airfoil flow - stable streamlines in physical plane *)\n\
+U = 1; R = 1; c = -0.1 + 0.2 I; alpha = 15 Degree;\n\
+Gamma = 4 Pi R U Sin[alpha]; (* Kutta circulation for Joukowski airfoil *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+\n\
+(* Joukowski map *)\n\
+J[z_] := z + R^2/z;\n\
+Jprime[z_] := 1 - R^2/z^2;\n\
+\n\
+(* Inverse Joukowski (choose branch outside circle centered at c) *)\n\
+invJ[w_?NumericQ] := Module[{s, z1, z2},\n\
+  s = Sqrt[w^2 - 4 R^2];\n\
+  z1 = (w + s)/2; z2 = (w - s)/2;\n\
+  If[Abs[z1 - c] >= R, z1, z2]\n\
+];\n\
+\n\
+(* Complex potential around circle centered at c, radius R *)\n\
+Wz[z_] := Module[{zeta = z - c},\n\
+  U Exp[-I alpha] (zeta + R^2/zeta) + I Gamma/(2 Pi) Log[zeta]\n\
+];\n\
+\n\
+(* Complex velocity in physical plane: dW/dw = (dW/dz)/(dJ/dz) *)\n\
+Vw[w_?NumericQ] := Module[{z = invJ[w], zeta},\n\
+  zeta = z - c;\n\
+  (U Exp[-I alpha] (1 - R^2/zeta^2) + I Gamma/(2 Pi) (1/zeta)) / Jprime[z]\n\
+];\n\
+\n\
+u[x_?NumericQ, y_?NumericQ] := Re[Vw[x + I y]];\n\
+v[x_?NumericQ, y_?NumericQ] := -Im[Vw[x + I y]];\n\
+\n\
+insideAirfoilQ[x_?NumericQ, y_?NumericQ] := Module[{z = invJ[x + I y]}, Abs[z - c] <= R + 0.001];\n\
+\n\
+xMin = -0.5; xMax = 1.6; yMin = -0.6; yMax = 0.6;\n\
+seedY = Range[yMin, yMax, 0.1];\n\
+seedPts = Transpose[{ConstantArray[xMin + 0.05, Length[seedY]], seedY}];\n\
+\n\
+flow = StreamPlot[{u[x, y], v[x, y]}, {x, xMin, xMax}, {y, yMin, yMax},\n\
+  StreamPoints -> {seedPts}, StreamStyle -> Directive[Blue, Thick, Arrowheads[0.02]],\n\
+  StreamScale -> {Small, Scaled[0.35], None},\n\
+  RegionFunction -> Function[{x, y}, Not[insideAirfoilQ[x, y]]]];\n\
+\n\
+airfoil = ParametricPlot[ReIm[J[c + R Exp[I t]]], {t, 0, 2 Pi},\n\
+  PlotStyle -> Directive[Black, Thick]];\n\
+body = Graphics[{GrayLevel[0.85], Polygon[ReIm[J[c + R Exp[I t]]] /. t -> # & /@ Range[0, 2 Pi, 0.03]]}];\n\
+\n\
+Show[flow, body, airfoil, Evaluate@base, PlotRange -> {{xMin, xMax}, {yMin, yMax}}]\n", "Input"]
+}]

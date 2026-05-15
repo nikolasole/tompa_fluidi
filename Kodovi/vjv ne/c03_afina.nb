@@ -1,0 +1,12 @@
+Notebook[{
+ Cell["(* Example 5.3 - Affine map z -> alpha z + beta *)\n\
+alpha = 1 + I; beta = -0.2 + 0.1 I;\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, ImageSize -> 800};\n\
+g[z_] := alpha z + beta;\n\
+map[z_] := {Re[g[z]], Im[g[z]]};\n\
+grid = Show[\n\
+  Table[ParametricPlot[map[x0 + I t], {t, -1, 1}, PlotStyle -> Black], {x0, -1, 1, 0.2}],\n\
+  Table[ParametricPlot[map[t + I y0], {t, -1, 1}, PlotStyle -> Black], {y0, -1, 1, 0.2}]\n\
+];\n\
+Show[grid, Evaluate@base]\n", "Input"]
+}]

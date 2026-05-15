@@ -1,0 +1,113 @@
+Notebook[{
+ Cell["(* Flow over an airfoil – static, styled like p01–p03 *)\n\
+\n\
+(* === parameters === *)\n\
+alphaD = 7.5; (* angle of attack in degrees *)\n\
+\n\
+(* === visual base style === *)\n\
+base = {Frame -> True, Axes -> False, FrameStyle -> Black, Background -> White, \n\
+  ImageSize -> 800, PlotRange -> All};\n\
+\n\
+(* === airfoil data (E374) === *)\n\
+datafile = {{\"E374\"}, {1., 0.}, {0.9964, 0.00045}, {0.9861, 0.00204}, {0.97, 0.00485}, {0.94864, 0.00846}, {0.92214, 0.01264}, {0.89078, 0.01747}, {0.85508, 0.02297}, {0.8156, 0.02905}, {0.77293, 0.0356}, {0.72769, 0.04246}, {0.68053, 0.04944}, {0.6321, 0.05629}, {0.58309, 0.06269}, {0.53398, 0.06821}, {0.48511, 0.07252}, {0.43682, 0.07544}, {0.38939, 0.07685}, {0.34312, 0.0767}, {0.29824, 0.07507}, {0.2551, 0.07217}, {0.21415, 0.06817}, {0.17583, 0.06319}, {0.14053, 0.05734}, {0.1086, 0.05073}, {0.08036, 0.04351}, {0.05605, 0.03581}, {0.03589, 0.02781}, {0.02004, 0.01973}, {0.00862, 0.01186}, {0.00178, 0.00459}, {0.00014, -0.00121}, {0.00437, -0.00622}, {0.01427, -0.0113}, {0.02935, -0.016}, {0.04949, -0.02015}, {0.07454, -0.02369}, {0.10428, -0.0266}, {0.13845, -0.0289}, {0.17669, -0.0306}, {0.21861, -0.03175}, {0.26374, -0.03238}, {0.31158, -0.03255}, {0.36159, -0.03228}, {0.4132, -0.03163}, {0.4658, -0.03064}, {0.51877, -0.02931}, {0.5715, -0.02767}, {0.62336, -0.02569}, {0.67382, -0.02333}, {0.72243, -0.02059}, {0.76873, -0.0176}, {0.81228, -0.0145}, {0.85254, -0.01153}, {0.88892, -0.00882}, {0.92085, -0.00643}, {0.94783, -0.00432}, {0.96958, -0.00241}, {0.98594, -0.00091}, {0.99637, -0.00016}, {1., 0.}};\n\
+\n\
+(* === helper functions === *)\n\
+AirfoilFromDataFile[datafile_] := Module[{convention, data, n, orderedPoints, points},\n\
+  data = Cases[datafile, {_, _}];\n\
+  data = If[Last[data][[1]] < 5, data, Most[data]];\n\
+  convention = If[data[[2, 1]] <= 0.001, \"ForeToAft\", \"Counterclockwise\"];\n\
+  orderedPoints = Switch[convention,\n\
+    \"Counterclockwise\", Reverse[data],\n\
+    \"ForeToAft\",\n\
+      {n, points} = {IntegerPart[First[data][[1]]], Rest[data]};\n\
+      Join[Reverse[Take[points, -(n - 1)]], Take[points, n]]\n\
+  ];\n\
+  Transpose[orderedPoints]\n\
+];\n\
+\n\
+MakeCartesianVectors[{vx_, vy_}] := {vx, vy};\n\
+Components[v_] := v;\n\
+NumberOfVectors[v_] := Length[v[[1]]];\n\
+\n\
+DisplacementVectors[ra_, rb_] := Outer[Plus, ra, -rb];\n\
+\n\
+UniformFlow[alpha_] := {Cos[alpha], Sin[alpha]};\n\
+\n\
+PanelNormals[r_] := Module[{dr}, dr = Drop[r - RotateRight[r], 1];\n\
+  Normalize[Cross[Append[#, 0] & /@ dr]][[All, {1, 3}]]\n\
+];\n\
+\n\
+PanelLengths[r_] := Module[{dr}, dr = Drop[r - RotateRight[r], 1];\n\
+  Sqrt[Total[dr^2, {2}]]\n\
+];\n\
+\n\
+PanelPointsMid[r_] := Module[{dr}, dr = Drop[r - RotateRight[r], 1];\n\
+  Drop[r, -1] + 0.5 dr\n\
+];\n\
+\n\
+ICVortexLinear[rf_, rs_] := Module[{rfs, theta, r1, r2, fAT, fLog, x, z, x2},\n\
+  rfs = DisplacementVectors[rf, rs];\n\
+  theta = ArcTan @@@ Rest[rs - RotateRight[rs]];\n\
+  r1 = Transpose[RotationTransform /@ (-theta) . Transpose[Drop[Transpose[rfs], -1]]];\n\
+  r2 = Transpose[RotationTransform /@ (-theta) . Transpose[Drop[Transpose[rfs], 1]]];\n\
+  fAT = ArcTan @@@ r2 - ArcTan @@@ r1;\n\
+  fLog = Log[(Total[r2^2, {2}])/(Total[r1^2, {2}])];\n\
+  {x, z} = Transpose[r1];\n\
+  x2 = r2[[All, 1]];\n\
+  { (1/(2 Pi)) {fAT, (1/2) fLog},\n\
+    (1/(2 Pi)) {x fAT + (1/2 z) fLog, (1/2 x) fLog - z fAT + x - x2} }\n\
+];\n\
+\n\
+PanelMethod[rP_, alpha_] := Module[{epsilon = 10^-10, a, b, icA, icB, nP, rC, un, delta, mVA, mVB, im, mD2, mGA, mBA, vInfN, vInf, vel, vC},\n\
+  un = PanelNormals[rP];\n\
+  delta = PanelLengths[rP];\n\
+  nP = Length[delta];\n\
+  rC = PanelPointsMid[rP] + epsilon un;\n\
+  {icA, icB} = ICVortexLinear[rC, rP];\n\
+  mVA = icA.un;\n\
+  mVB = icB.un;\n\
+  im = IdentityMatrix[nP];\n\
+  mD2 = im - RotateLeft[im];\n\
+  mGA = ReplacePart[mD2, 0, {-1, 1}];\n\
+  mBA = -DiagonalMatrix[1/delta].mGA;\n\
+  vInf = UniformFlow[alpha];\n\
+  vInfN = vInf.un;\n\
+  a = LinearSolve[mVA + mVB.mBA, -vInfN];\n\
+  b = mBA.a;\n\
+  vel = vInf + icA.a + icB.b;\n\
+  vC = Sqrt[Total[vel^2, {2}]];\n\
+  {a, b, rC, vC}\n\
+];\n\
+\n\
+(* === compute === *)\n\
+rP = AirfoilFromDataFile[datafile];\n\
+alpha = alphaD Degree;\n\
+{a, b, rC, vC} = PanelMethod[rP, alpha];\n\
+\n\
+(* === flow field === *)\n\
+xMin = -0.5; xMax = 1.5; zMin = -0.5; zMax = 0.5;\n\
+\n\
+vInf = UniformFlow[alpha];\n\
+\n\
+u[x_, z_] := Module[{rf = {x, z}, icA, icB, vel},\n\
+  {icA, icB} = ICVortexLinear[{rf}, rP];\n\
+  vel = vInf + icA.a + icB.b;\n\
+  vel[[1]]\n\
+];\n\
+\n\
+v[x_, z_] := Module[{rf = {x, z}, icA, icB, vel},\n\
+  {icA, icB} = ICVortexLinear[{rf}, rP];\n\
+  vel = vInf + icA.a + icB.b;\n\
+  vel[[2]]\n\
+];\n\
+\n\
+flow = StreamPlot[{u[x, z], v[x, z]}, {x, xMin, xMax}, {z, zMin, zMax},\n\
+  StreamStyle -> Directive[Black, Arrowheads[0.02]], StreamPoints -> Fine,\n\
+  StreamScale -> {Small, Scaled[0.6], None},\n\
+  Evaluate@base\n\
+];\n\
+\n\
+airfoil = Graphics[{Black, Thick, Line[Transpose[rP]]}];\n\
+\n\
+Show[flow, airfoil, Evaluate@base]\n", "Input"]
+}]

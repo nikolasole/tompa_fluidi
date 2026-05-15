@@ -1,0 +1,23 @@
+Notebook[{
+ Cell["(* Joukowski profiles grid (multiple centers/radii) *)\n\
+base = {Axes -> False, Frame -> False, Background -> White, ImageSize -> 900};\n\
+J[z_] := (z + 1/z)/2;\n\
+profiles = {\n\
+  {0.1 + 0.0 I, 0.5, \"Center: 0.1\", \"Radius: 0.5\"},\n\
+  {0.2 + 1.0 I, 0.8, \"Center: 0.2 + i\", \"Radius: 0.8\"},\n\
+  {1.0 + 1.0 I, 1.0, \"Center: 1 + i\", \"Radius: 1\"},\n\
+  {-2.0 + 3.0 I, 4.2426, \"Center: -2 + 3 i\", \"Radius: 4.2426\"},\n\
+  {0.2 + 1.0 I, 1.2806, \"Center: 0.2 + i\", \"Radius: 1.2806\"},\n\
+  {0.1 + 0.3 I, 0.9487, \"Center: 0.1 + 0.3 i\", \"Radius: 0.9487\"},\n\
+  {-0.1 + 0.1 I, 1.1045, \"Center: -0.1 + 0.1 i\", \"Radius: 1.1045\"},\n\
+  {-0.2 + 0.1 I, 1.2042, \"Center: -0.2 + 0.1 i\", \"Radius: 1.2042\"}\n\
+};\n\
+plotOne[{c_, R_, lab1_, lab2_}] := Module[{curve},\n\
+  curve = ParametricPlot[\n\
+    {Re[J[c + R Exp[I t]]], Im[J[c + R Exp[I t]]]}, {t, 0, 2 Pi},\n\
+    PlotStyle -> Directive[Blue, Thin], PlotRange -> 2.5\n\
+  ];\n\
+  Show[curve, PlotLabel -> Style[lab1 <> \"\\n\" <> lab2, 12], Evaluate@base]\n\
+];\n\
+GraphicsGrid[Partition[plotOne /@ profiles, 4], Spacings -> {1, 1}]\n", "Input"]
+}]
